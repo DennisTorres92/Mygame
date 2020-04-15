@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build game Linux",
+            "type": "shell",
+            "command": "g++", 
+            "args":[
+                "-g", "-D", "_DEBUG",  //DEBUG Modus
+                "main.cpp", "shaders/shader.cpp", "src/buffers.cpp", "src/player.cpp", "src/menu.cpp", "src/models.cpp", "src/camera.cpp",
+                "-lGL", "-lSDL2" ,"-lGLEW",
+                "-o", "game"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build export Linux",
+            "type": "shell",
+            "command": "g++", 
+            "args":[
+                "-g", "tools/blenderOBJ2BMF.cpp", 
+                "-lassimp",
+                "-o", "tools/modelexport"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {   
+            "label": "Build game windows",   //BUILD FOR WINDOWS NEED CROSS COMPILE TOOLCHAIN
+            "type": "shell",
+            "command": "/usr/bin/g++",
+            "args": ["-g"," main.cpp", "-o"," game.exe"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        
+    ]
+}
