@@ -35,6 +35,7 @@ glm::vec3 Camera::onMouseMoved(float xRel, float yRel, float mouseSensitivity) {
         front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
         front.y = sin(glm::radians(pitch));
         front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+        lookAt = glm::normalize(front);
         return glm::normalize(front);
     }
 glm::mat4 Camera::getview(){

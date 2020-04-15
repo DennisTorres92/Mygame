@@ -60,7 +60,7 @@ void Player::move(SDL_Event ev){
                 fly = false;
                 break;
             case SDLK_SPACE:
-                if(position.y <= 0.0f && !bjump){
+                if(position.y <= 0.0f && !bjump && !fly){
                     jump = 30;
                     bjump = true;
                 }
