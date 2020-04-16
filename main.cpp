@@ -43,7 +43,8 @@ int main(int argc, char** argv){
         }
         player.ismove(delta);
         player.update(delta);
-        sun(player.camera->getview(), glm::vec3(1.0f, 0.898f, 0.49f), &shader);
+        pointlight(&shader, player.camera->getview());
+        sun(player.camera->getview(), glm::vec3(1.0f), &shader);
         monkey.render();
         win.swap();
 

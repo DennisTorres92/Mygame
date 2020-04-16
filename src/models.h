@@ -5,7 +5,7 @@
 
 #include "buffers.h"
 
-class Mesh{
+struct Mesh{
     public:
         Mesh(std::vector<Vertex>& vertices, uint64 numVertices, std::vector<uint32>& indices, Material material, uint64 numindexies, Shader* shader);
         ~Mesh();
@@ -32,3 +32,4 @@ class Model{
 };
 
 void sun(glm::mat4 view, glm::vec3 sunColor, Shader* shader);
+void pointlight(Shader* shader, glm::mat4 view);
