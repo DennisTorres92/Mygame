@@ -1,7 +1,7 @@
 #include "camera.h" 
 
 
-Camera::Camera(int shaderID, uint32 width, uint32 height, float fov){
+Camera::Camera(int shaderID, uint32 width, uint32 height, float fov, glm::vec3& position){
     modelViewProjmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_modelViewProj"));
     modelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_ModelView"));
     invmodelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_invModelView"));

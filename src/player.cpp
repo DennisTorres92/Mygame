@@ -2,15 +2,16 @@
 
 
 Player::Player(int shaderid, uint32 width, uint32 height, float fov){
+    up = glm::vec3(0.0f, 1.0f, 0.0f);
+    camera = new Camera(shaderid, width, height, fov, position);
     loadplayer();
-    camera = new Camera(shaderid, width, height, fov);
 }
 Player::~Player(){
     saveplayer(); 
     delete camera;
 }
 void Player::loadplayer(){
-    up = glm::vec3(0.0f, 1.0f, 0.0f);
+    
 }
 void Player::saveplayer(){ 
 }
