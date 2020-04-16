@@ -96,7 +96,7 @@ void pointlight(Shader* shader, glm::mat4 view, float delta){
     glm::vec3 pointLightColor = glm::vec3(1.0f, 0.01f, 0.01f);
 	GLCALL(glUniform3fv(glGetUniformLocation(shader->getShaderid(), "u_pointlight.diffuse"), 1, (float*)&pointLightColor));
 	GLCALL(glUniform3fv(glGetUniformLocation(shader->getShaderid(), "u_pointlight.specular"), 1, (float*)&pointLightColor));
-	pointLightColor *= 0.4f;
+	pointLightColor *= 0.1f;
 	GLCALL(glUniform3fv(glGetUniformLocation(shader->getShaderid(), "u_pointlight.ambient"), 1, (float*)&pointLightColor));
 	GLCALL(glUniform1f(glGetUniformLocation(shader->getShaderid(), "u_pointlight.linear"), 0.027f));
 	GLCALL(glUniform1f(glGetUniformLocation(shader->getShaderid(), "u_pointlight.quadratic"), 0.0028f));

@@ -46,7 +46,7 @@ int main(int argc, char** argv){
         monkey.render();
         monkey.rotate(player.camera->getview(), player.camera->getproj(), delta, &shader);
         pointlight(&shader, player.camera->getview(), delta);
-        sun(player.camera->getview(), glm::vec3(0.0f), &shader);
+        sun(player.camera->getview(), glm::vec3(1.0f), &shader);
         
         win.swap();
 
