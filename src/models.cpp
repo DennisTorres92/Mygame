@@ -92,7 +92,7 @@ void sun(glm::mat4 view, glm::vec3 sunColor, Shader* shader){
     sunColor *= 0.2f;
     GLCALL(glUniform3fv(glGetUniformLocation(shader->getShaderid(), "u_directional.ambient"), 1, (float*)&sunColor));
 }
-void pointlight(Shader* shader, glm::mat4 view){
+void pointlight(Shader* shader, glm::mat4 view, float delta){
     glm::vec3 pointLightColor = glm::vec3(1.0f, 0.01f, 0.01f);
 	GLCALL(glUniform3fv(glGetUniformLocation(shader->getShaderid(), "u_pointlight.diffuse"), 1, (float*)&pointLightColor));
 	GLCALL(glUniform3fv(glGetUniformLocation(shader->getShaderid(), "u_pointlight.specular"), 1, (float*)&pointLightColor));
@@ -101,9 +101,8 @@ void pointlight(Shader* shader, glm::mat4 view){
 	GLCALL(glUniform1f(glGetUniformLocation(shader->getShaderid(), "u_pointlight.linear"), 0.027f));
 	GLCALL(glUniform1f(glGetUniformLocation(shader->getShaderid(), "u_pointlight.quadratic"), 0.0028f));
 	glm::vec4 pointLightPosition = glm::vec4(-1.01f, 1.01f, 50.0f, 1.0f);
-	int positionLocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_pointlight.position"));
-    //glm::mat4 pointLightMatrix = glm::rotate(glm::mat4(1.0f), -delta, {0.0f, 1.0f, 0.0f});
-	pointLightPosition = /*pointLightMatrix */ pointLightPosition;
+    glm::mat4 pointLightMatrix = glm::rotate(glm::mat4(1.0f), -delta, {0.0f, 1.0f, 0.0f});
+	pointLightPosition = pointLightMatrix * pointLightPosition;
 	glm::vec3 transformedPointLightPosition = (glm::vec3) (view * pointLightPosition);
-	glUniform3fv(positionLocation, 1, (float*)&transformedPointLightPosition);
+	GLCALL(glUniform3fv(glGetUniformLocation(shader->getShaderid(), "u_pointlight.position"), 1, (float*)&transformedPointLightPosition));
 }

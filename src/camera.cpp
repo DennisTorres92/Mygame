@@ -3,7 +3,7 @@
 
 Camera::Camera(int shaderID, uint32 width, uint32 height, float fov, glm::vec3& position){
     modelViewProjmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_modelViewProj"));
-    modelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_ModelView"));
+    modelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_modelView"));
     invmodelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_invModelView"));
     model = glm::mat4(1.0f);
     position = glm::vec3(0.0f, 0.0f,3.0f);

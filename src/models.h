@@ -29,9 +29,9 @@ class Model{
         void render();
         void rotate(glm::mat4 view,glm::mat4 projection, float delta, Shader* shader);
     private:
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         std::vector<Mesh*> meshes;
 };
 
 void sun(glm::mat4 view, glm::vec3 sunColor, Shader* shader);
-void pointlight(Shader* shader, glm::mat4 view);
+void pointlight(Shader* shader, glm::mat4 view, float delta);
