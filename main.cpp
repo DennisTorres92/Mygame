@@ -41,7 +41,7 @@ int main(int argc, char** argv){
             }
             player.move(event);
         }
-        player.ismove(delta);
+        player.ismove(delta, shader.getShaderid());
         player.update(delta);
         monkey.render();
         monkey.rotate(player.camera->getview(), player.camera->getproj(), delta, &shader);

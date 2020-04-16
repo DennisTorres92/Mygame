@@ -33,6 +33,22 @@ std::string Player::getclass(){
         return "ERROR";
     }
 }
+void Player::spotlight(int shaderid){
+    glm::vec3 spotLightColor = glm::vec3(0.0f);
+    if(spotl){
+        spotLightColor = glm::vec3(1.0f);
+    }
+	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.diffuse"), 1, (float*)&spotLightColor));
+	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.specular"), 1, (float*)&spotLightColor));
+	spotLightColor *= 0.2f;
+	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.ambient"), 1, (float*)&spotLightColor));
+	glm::vec3 spotLightPosition = glm::vec3(0.0f);
+	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.position"), 1, (float*)&spotLightPosition));
+	spotLightPosition.z = 1.0f;
+	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.direction"), 1, (float*)&spotLightPosition));
+	GLCALL(glUniform1f(glGetUniformLocation(shaderid, "u_spotlight.innerCone"), 0.95f));
+	GLCALL(glUniform1f(glGetUniformLocation(shaderid, "u_spotlight.outerCone"), 0.80f));
+}
 void Player::move(SDL_Event ev){
     if(ev.type == SDL_KEYDOWN ){
         switch(ev.key.keysym.sym){
@@ -59,6 +75,13 @@ void Player::move(SDL_Event ev){
                 break;
             case SDLK_t:
                 fly = false;
+                break;
+            case SDLK_l:
+                if(spotl){
+                    spotl = false;
+                }else{
+                    spotl = true;
+                }
                 break;
             case SDLK_SPACE:
                 if(position.y <= 0.0f && !bjump && !fly){
@@ -107,7 +130,7 @@ void Player::move(SDL_Event ev){
             camera->onMouseMoved(ev.motion.xrel, ev.motion.yrel, mouseSensitivity);
     }
 }
-void Player::ismove(float32 delta){
+void Player::ismove(float32 delta, int shaderid){
     if(mvforward){
         if(fly){
             position += camera->lookat() * (2.0f * delta);
@@ -136,4 +159,5 @@ void Player::ismove(float32 delta){
         position += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * (4.0f * delta);
         jump--;
     }
+    spotlight(shaderid);
 }
