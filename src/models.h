@@ -27,7 +27,9 @@ class Model{
         ~Model();
         void init(const char* filename, Shader* shader);
         void render();
+        void rotate(glm::mat4 view,glm::mat4 projection, float delta, Shader* shader);
     private:
+        glm::mat4 model;
         std::vector<Mesh*> meshes;
 };
 

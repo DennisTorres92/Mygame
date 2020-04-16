@@ -41,6 +41,9 @@ glm::vec3 Camera::onMouseMoved(float xRel, float yRel, float mouseSensitivity) {
 glm::mat4 Camera::getview(){
     return view;
 }
+glm::mat4 Camera::getproj(){
+    return projektion;
+}
 glm::vec3 Camera::lookat(){
     return lookAt;
 }

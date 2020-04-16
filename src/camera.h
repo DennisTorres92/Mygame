@@ -9,6 +9,7 @@ struct Camera{
     void update(float32 delta, glm::vec3 pos, glm::vec3 up);
     glm::vec3 onMouseMoved(float xRel, float yRel, float mouseSensitivity);
     glm::mat4 getview();
+    glm::mat4 getproj();
     glm::vec3 lookat();
     private:
     int modelViewProjmatrixloc, modelViewmatrixloc, invmodelViewmatrixloc;

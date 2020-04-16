@@ -77,6 +77,11 @@ void Model::render(){
         mesh->render();
     }
 }
+void Model::rotate(glm::mat4 view,glm::mat4 projection, float delta, Shader* shader){
+    model = glm::rotate(model, 1.0f*delta, glm::vec3(0, 1, 0));
+    glm::mat4 modelViewProj = projection * view * model;
+    GLCALL(glUniformMatrix4fv(glGetUniformLocation(shader->getShaderid(), "u_modelViewProj"), 1, GL_FALSE, &modelViewProj[0][0]));
+}
 
 void sun(glm::mat4 view, glm::vec3 sunColor, Shader* shader){
     glm::vec3 sunPos = glm::vec3(-1.0f);

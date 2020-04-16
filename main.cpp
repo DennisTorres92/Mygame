@@ -43,9 +43,11 @@ int main(int argc, char** argv){
         }
         player.ismove(delta);
         player.update(delta);
+        monkey.render();
+        monkey.rotate(player.camera->getview(), player.camera->getproj(), delta, &shader);
         pointlight(&shader, player.camera->getview());
         sun(player.camera->getview(), glm::vec3(1.0f), &shader);
-        monkey.render();
+        
         win.swap();
 
         uint64 endCounter = SDL_GetPerformanceCounter();
