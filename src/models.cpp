@@ -18,7 +18,7 @@ uint64 numindexies, Shader* shader, const char* filediffuse, const char* filenor
 Mesh::~Mesh(){
     delete indexbuffer;
     delete vertexbuffer;
-    //delete texturebuffer;
+    delete texturebuffer;
 }
 void Mesh::render(){
     vertexbuffer->bind();
