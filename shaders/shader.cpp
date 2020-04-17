@@ -16,15 +16,15 @@ void Shader::unbind(){
 GLuint Shader::compile(std::string shadersource, GLenum type){
     GLuint id = glCreateShader(type);
     const char* src = shadersource.c_str();
-    glShaderSource(id, 1, &src, 0);
-    glCompileShader(id);
+    GLCALL(glShaderSource(id, 1, &src, 0));
+    GLCALL(glCompileShader(id));
     int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    GLCALL(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
     if(result != GL_TRUE){
         int lenght = 0;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &lenght);
+        GLCALL(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &lenght));
         char* msg = new char[lenght];
-        glGetShaderInfoLog(id, lenght, &lenght, msg);
+        GLCALL(glGetShaderInfoLog(id, lenght, &lenght, msg));
         std::cout<<"Shader Compile Error "<<msg<<"\n";
         delete[] msg;
         return 0;
@@ -53,14 +53,14 @@ GLuint Shader::createShader(const char* vertexShaderFilename, const char* fragme
     GLuint program = glCreateProgram();
     GLuint vs = compile(vertexShaderSource, GL_VERTEX_SHADER);
     GLuint fs = compile(fragmentShaderSource, GL_FRAGMENT_SHADER);
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
+    GLCALL(glAttachShader(program, vs));
+    GLCALL(glAttachShader(program, fs));
+    GLCALL(glLinkProgram(program));
     #ifdef _RELEASE
-        glDetachShader(program, vs);
-        glDetachShader(program, fs);
-        glDeleteShader(vs);
-        glDeleteShader(fs);
+        GLCALL(glDetachShader(program, vs));
+        GLCALL(glDetachShader(program, fs));
+        GLCALL(glDeleteShader(vs));
+        GLCALL(glDeleteShader(fs));
     #endif  /*_RELEASE  */
     return program;
 } 

@@ -7,7 +7,8 @@
 
 struct Mesh{
     public:
-        Mesh(std::vector<Vertex>& vertices, uint64 numVertices, std::vector<uint32>& indices, Material material, uint64 numindexies, Shader* shader);
+        Mesh(std::vector<Vertex>& vertices, uint64 numVertices, std::vector<uint32>& indices, Material material, 
+            uint64 numindexies, Shader* shader, const char* filediffuse, const char* filenormal);
         ~Mesh();
     void render();
     private:
@@ -21,6 +22,7 @@ struct Mesh{
         int specularlocation;
         int emissivelocation;
         int shininesslocation;
+        int diffuseMapLocation;
 };
 class Model{
     public:

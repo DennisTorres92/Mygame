@@ -10,18 +10,22 @@
 struct Position {
     float x, y, z;
 };
-
+struct Position2D {
+    float x, y;
+};
 struct Material {
     Position diffuse;
     Position specular;
     Position emissive;
     float shininess;
+    aiString diffuseMapName;
+    aiString normalMapName;
 };
-
 struct Mesh {
     std::vector<Position> positions;
     std::vector<Position> normals;
     std::vector<uint32_t> indices;
+    std::vector<Position2D> uvs;
     Material material;
 };
 
@@ -42,6 +46,12 @@ void processMesh(aiMesh* mesh, const aiScene* scene) {
         normal.y = mesh->mNormals[i].y;
         normal.z = mesh->mNormals[i].z;
         m.normals.push_back(normal);
+
+        Position2D uv;
+        assert(mesh->mNumUVComponents > 0);
+        uv.x = mesh->mTextureCoords[0][i].x;
+        uv.y = mesh->mTextureCoords[0][i].y;
+        m.uvs.push_back(uv);
     }
 
     for(unsigned int i = 0; i < mesh->mNumFaces; i++) {
@@ -80,7 +90,7 @@ char* getFilename(char* filename) {
 
 void processMaterials(const aiScene* scene) {
     for(uint32_t i = 0; i < scene->mNumMaterials; i++) {
-        Material mat;
+        Material mat = {};
         aiMaterial* material = scene->mMaterials[i];
 
         aiColor3D diffuse(0.0f, 0.0f, 0.0f);
@@ -114,6 +124,13 @@ void processMaterials(const aiScene* scene) {
         mat.specular.x *= shininessStrength;
         mat.specular.y *= shininessStrength;
         mat.specular.z *= shininessStrength;
+
+        uint32_t numDiffuseMaps = material->GetTextureCount(aiTextureType_DIFFUSE);
+        uint32_t numNormalMaps = material->GetTextureCount(aiTextureType_NORMALS);
+        assert(numDiffuseMaps > 0);
+        material->GetTexture(aiTextureType_DIFFUSE, 0, &mat.diffuseMapName);
+        assert(numNormalMaps > 0);
+        material->GetTexture(aiTextureType_NORMALS, 0, &mat.normalMapName);
 
         materials.push_back(mat);
     }
@@ -153,6 +170,17 @@ int main(int argc, char** argv) {
         output.write((char*)&mesh.material.emissive, sizeof(Position));
         output.write((char*)&mesh.material.specular, sizeof(Position));
         output.write((char*)&mesh.material.shininess, sizeof(float));
+        const char* pathPrefix = "models/";
+        // Diffuse map
+        uint64_t diffuesMapNameLength = mesh.material.diffuseMapName.length + 7;
+        output.write((char*)&diffuesMapNameLength, sizeof(uint64_t));
+        output.write(pathPrefix, 7);
+        output.write((char*)&mesh.material.diffuseMapName.data, mesh.material.diffuseMapName.length);
+        // Normal map
+        uint64_t normalMapNameLength = mesh.material.normalMapName.length + 7;
+        output.write((char*)&normalMapNameLength, sizeof(uint64_t));
+        output.write(pathPrefix, 7);
+        output.write((char*)&mesh.material.normalMapName.data, mesh.material.normalMapName.length);
 
         output.write((char*)&numVertices, sizeof(uint64_t));
         output.write((char*)&numIndices, sizeof(uint64_t));

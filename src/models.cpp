@@ -1,16 +1,19 @@
 #include "models.h"
 
 
-Mesh::Mesh(std::vector<Vertex>& vertices, uint64 numVertices, std::vector<uint32>& indices, Material material, uint64 numindexies, Shader* shader){
+Mesh::Mesh(std::vector<Vertex>& vertices, uint64 numVertices, std::vector<uint32>& indices, Material material, 
+uint64 numindexies, Shader* shader, const char* filediffuse, const char* filenormal){
     this->material = material;
     this->shader = shader;
     this->numindexies = numindexies;
     vertexbuffer = new VertexBuffer(vertices.data(), numVertices);
     indexbuffer = new IndexBuffer(indices.data(), numindexies, sizeof(indices[0]));
+    texturebuffer = new TextureBuffer(filediffuse, material.diffuseMap, filenormal, material.normalMap);
     diffuselocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.diffuse"));
     specularlocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.specular"));
     emissivelocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.emissive"));
     shininesslocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.shininess"));
+    diffuseMapLocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_diffusemap"));
 }
 Mesh::~Mesh(){
     delete indexbuffer;
@@ -24,6 +27,8 @@ void Mesh::render(){
     GLCALL(glUniform3fv(specularlocation, 1, (float*)&material.specular));
     GLCALL(glUniform3fv(emissivelocation, 1, (float*)&material.emissive));
     GLCALL(glUniform1f(shininesslocation, material.shininess));
+    texturebuffer->bind();
+    GLCALL(glUniform1i(diffuseMapLocation, 0));
     GLCALL(glDrawElements(GL_TRIANGLES, numindexies, GL_UNSIGNED_INT, 0));
 }
 
@@ -45,6 +50,14 @@ void Model::init(const char* filename, Shader* shader){
         input.read((char*)&material.emissive, sizeof(glm::vec3));
         input.read((char*)&material.specular, sizeof(glm::vec3));
         input.read((char*)&material.shininess, sizeof(float));
+        uint64 diffuseMapNameLength = 0;
+        input.read((char*)&diffuseMapNameLength, sizeof(uint64));
+        std::string diffuseMapName(diffuseMapNameLength, '\0');
+        input.read((char*)&diffuseMapName[0], diffuseMapNameLength);
+        uint64 normalMapNameLength = 0;
+        input.read((char*)&normalMapNameLength, sizeof(uint64));
+        std::string normalMapName(normalMapNameLength, '\0');
+        input.read((char*)&normalMapName[0], normalMapNameLength);
         input.read((char*)&numVertices, sizeof(uint64));
         input.read((char*)&numindexies, sizeof(uint64));
         for(uint64 i = 0; i < numVertices; i++) {
@@ -55,6 +68,8 @@ void Model::init(const char* filename, Shader* shader){
             input.read((char*)&vertex.normals.x, sizeof(float));
             input.read((char*)&vertex.normals.y, sizeof(float));
             input.read((char*)&vertex.normals.z, sizeof(float));
+            input.read((char*)&vertex.texture.x, sizeof(float));
+            input.read((char*)&vertex.texture.y, sizeof(float));
             vertices.push_back(vertex);
         }
         for(uint64 i = 0; i < numindexies; i++) {
@@ -62,7 +77,7 @@ void Model::init(const char* filename, Shader* shader){
             input.read((char*)&index, sizeof(uint32));
             indices.push_back(index);
         }
-        Mesh* mesh = new Mesh(vertices, numVertices, indices, material, numindexies, shader);
+        Mesh* mesh = new Mesh(vertices, numVertices, indices, material, numindexies, shader, diffuseMapName.c_str(), normalMapName.c_str());
         meshes.push_back(mesh);
     }
 }

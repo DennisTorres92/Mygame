@@ -12,6 +12,8 @@ struct Material{
     glm::vec3 specular;
     glm::vec3 emissive;
     float shininess;
+    GLuint diffuseMap;
+    GLuint normalMap;
 };
 
 struct IndexBuffer{
@@ -37,14 +39,14 @@ private:
 
 struct TextureBuffer{
 public:
-    TextureBuffer(const char* filename);
+    TextureBuffer(const char* filediffuse, int diffuseMap, const char* filenormal, int normalMap);
     ~TextureBuffer();
     void bind();
     void unbind();
 private:
     int32 textureWidth = 0;
-	int32 textureHeight = 0;
-	int32 bitsPerPixel = 0;
-	GLuint textureId;
+    int32 textureHeight = 0;
+    int32 bitsPerPixel = 0;
+	GLuint idDiffuse, idNormal;
 };  
 

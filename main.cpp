@@ -12,7 +12,7 @@ int main(int argc, char** argv){
 
 
     Model monkey;
-    monkey.init("models/cube2.bmf", &shader);
+    monkey.init("models/fern.bmf", &shader);
 
     uint64 perfCounterFrequency = SDL_GetPerformanceFrequency();
     uint64 lastCounter = SDL_GetPerformanceCounter();
@@ -44,7 +44,7 @@ int main(int argc, char** argv){
         player.ismove(delta, shader.getShaderid());
         player.update(delta);
         monkey.render();
-        monkey.rotate(player.camera->getview(), player.camera->getproj(), delta, &shader);
+        //monkey.rotate(player.camera->getview(), player.camera->getproj(), delta, &shader);
         pointlight(&shader, player.camera->getview(), delta);
         sun(player.camera->getview(), glm::vec3(1.0f), &shader);
         

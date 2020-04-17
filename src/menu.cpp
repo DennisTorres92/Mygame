@@ -29,7 +29,7 @@ Window::Window(const char*  name, uint32 width, uint32 height, uint32 flags){
     #else  
         window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
     #endif /*_DEBUG */
-    glcontext = SDL_GL_CreateContext(window);
+    GLCALL(glcontext = SDL_GL_CreateContext(window));
     err = glewInit();
     if (err != GLEW_OK){
         std::cout<<"ERROR: "<<glewGetErrorString(err)<<"\n";

@@ -31,7 +31,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/tools/modelexport ",
             "args": [
-                    "${workspaceFolder}/tools/export.obj"
+                    "${workspaceFolder}/models/fern.FBX"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/models",
