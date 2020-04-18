@@ -192,6 +192,9 @@ int main(int argc, char** argv) {
             output.write((char*)&mesh.normals[i].x, sizeof(float));
             output.write((char*)&mesh.normals[i].y, sizeof(float));
             output.write((char*)&mesh.normals[i].z, sizeof(float));
+
+            output.write((char*)&mesh.uvs[i].x, sizeof(float));
+            output.write((char*)&mesh.uvs[i].y, sizeof(float));
         }
         for(uint64_t i = 0; i < numIndices; i++) {
             output.write((char*)&mesh.indices[i], sizeof(uint32_t));
