@@ -5,9 +5,9 @@ Camera::Camera(int shaderID, uint32 width, uint32 height, float fov, glm::vec3& 
     modelViewProjmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_modelViewProj"));
     modelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_modelView"));
     invmodelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_invModelView"));
-    model = glm::mat4(1.0f);model = glm::scale(model, glm::vec3(0.1f));
-    position = glm::vec3(0.0f, 0.0f,3.0f);
-    projektion = glm::perspective(glm::radians(fov / 2), (float)width/(float)height, 0.1f, 1000.0f);
+    model = glm::mat4(1.0f);model = glm::scale(model, glm::vec3(0.01f));
+    position = glm::vec3(0.0f, 0.0f, 5.0f);
+    projektion = glm::perspective(glm::radians(fov / 2), (float)width / (float)height, 0.1f, 1000.0f);
     view = glm::translate(glm::mat4(1.0f), position);
     yaw = -90.0f;
     pitch = 0.0f;
