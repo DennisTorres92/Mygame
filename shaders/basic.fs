@@ -2,8 +2,8 @@
 layout(location = 0) out vec4  f_color;
 
 in vec3 v_position;
-in vec2 v_texturecord;
 in vec3 v_normals;
+in vec2 v_texturecord;
 
 struct Material{
     vec3 specular;

@@ -45,9 +45,10 @@ void VertexBuffer::unbind(){
 
 
 //TEXTURBUFFER
-TextureBuffer::TextureBuffer(const char* filediffuse, int diffuseMap, const char* filenormal, int normalMap){
+TextureBuffer::TextureBuffer(const char* filediffuse, GLuint& diffuseMap, const char* filenormal, GLuint& normalMap){
     idDiffuse = diffuseMap;
-    GLCALL(glGenTextures(2, &idDiffuse));
+    idNormal = normalMap;
+    GLCALL(glGenTextures(1, &idDiffuse));
     stbi_set_flip_vertically_on_load(true);
     {
         auto textureBuffer = stbi_load(filediffuse, &textureWidth, &textureHeight, &bitsPerPixel, 4);
@@ -63,8 +64,7 @@ TextureBuffer::TextureBuffer(const char* filediffuse, int diffuseMap, const char
         stbi_image_free(textureBuffer);
     }
     }
-    
-    idNormal = normalMap;
+    GLCALL(glGenTextures(1, &idNormal));
     {   
         auto textureBuffer = stbi_load(filenormal, &textureWidth, &textureHeight, &bitsPerPixel, 4);
         assert(textureBuffer);

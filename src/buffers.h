@@ -39,7 +39,7 @@ private:
 
 struct TextureBuffer{
 public:
-    TextureBuffer(const char* filediffuse, int diffuseMap, const char* filenormal, int normalMap);
+    TextureBuffer(const char* filediffuse, GLuint& diffuseMap, const char* filenormal, GLuint& normalMap);
     ~TextureBuffer();
     void bind();
     void unbind();
