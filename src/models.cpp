@@ -14,6 +14,7 @@ uint64 numindexies, Shader* shader, const char* filediffuse, const char* filenor
     emissivelocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.emissive"));
     shininesslocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.shininess"));
     diffuseMapLocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_diffusemap"));
+    normalMapLocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_normalmap"));
 }
 Mesh::~Mesh(){
     delete indexbuffer;
@@ -27,8 +28,11 @@ void Mesh::render(){
     GLCALL(glUniform3fv(specularlocation, 1, (float*)&material.specular));
     GLCALL(glUniform3fv(emissivelocation, 1, (float*)&material.emissive));
     GLCALL(glUniform1f(shininesslocation, material.shininess));
-    texturebuffer->bind();
+    texturebuffer->binddif();
     GLCALL(glUniform1i(diffuseMapLocation, 0));
+    texturebuffer->bindnorm();
+    GLCALL(glActiveTexture(GL_TEXTURE0));
+    GLCALL(glUniform1i(normalMapLocation, 1));
     GLCALL(glDrawElements(GL_TRIANGLES, numindexies, GL_UNSIGNED_INT, 0));
 }
 
@@ -68,6 +72,9 @@ void Model::init(const char* filename, Shader* shader){
             input.read((char*)&vertex.normals.x, sizeof(float));
             input.read((char*)&vertex.normals.y, sizeof(float));
             input.read((char*)&vertex.normals.z, sizeof(float));
+            input.read((char*)&vertex.tangent.x, sizeof(float));
+            input.read((char*)&vertex.tangent.y, sizeof(float));
+            input.read((char*)&vertex.tangent.z, sizeof(float));
             input.read((char*)&vertex.texture.x, sizeof(float));
             input.read((char*)&vertex.texture.y, sizeof(float));
             vertices.push_back(vertex);

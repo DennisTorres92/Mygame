@@ -23,6 +23,7 @@ struct Mesh{
         int emissivelocation;
         int shininesslocation;
         int diffuseMapLocation;
+        int normalMapLocation;
 };
 class Model{
     public:

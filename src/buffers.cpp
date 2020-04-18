@@ -29,7 +29,9 @@ VertexBuffer::VertexBuffer(void* data, uint32 numvertices){
     GLCALL(glEnableVertexAttribArray(1));
     GLCALL(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(4*3)));
     GLCALL(glEnableVertexAttribArray(2));
-    GLCALL(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(4*6)));
+    GLCALL(glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(4*6)));
+    GLCALL(glEnableVertexAttribArray(3));
+    GLCALL(glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(4*9)));
     this->numvertices = numvertices;
     GLCALL(glBindVertexArray(0));
 }
@@ -85,10 +87,13 @@ TextureBuffer::~TextureBuffer(){
     GLCALL(glDeleteTextures(1, &idDiffuse));
 
 }
-void TextureBuffer::bind(){
-    //GLCALL(glActiveTexture(GL_TEXTURE0));
-	//GLCALL(glBindTexture(GL_TEXTURE_2D, idNormal));
+void TextureBuffer::binddif(){
+    GLCALL(glActiveTexture(GL_TEXTURE0));
     GLCALL(glBindTexture(GL_TEXTURE_2D, idDiffuse));
+}
+void TextureBuffer::bindnorm(){
+    GLCALL(glActiveTexture(GL_TEXTURE1));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, idNormal));
 }
 void TextureBuffer::unbind(){
 	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));

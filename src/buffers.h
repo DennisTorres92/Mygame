@@ -5,6 +5,7 @@
 struct Vertex{
     glm::vec3 positions;
     glm::vec3 normals;
+    glm::vec3 tangent;
     glm::vec2 texture;
 };
 struct Material{
@@ -19,6 +20,7 @@ struct Material{
 struct IndexBuffer{
     IndexBuffer(void* data, uint32 numIndexies, uint32 size);
     virtual ~IndexBuffer();
+    void binddif();
     void bind();
     void unbind();
 private:
@@ -41,7 +43,8 @@ struct TextureBuffer{
 public:
     TextureBuffer(const char* filediffuse, GLuint& diffuseMap, const char* filenormal, GLuint& normalMap);
     ~TextureBuffer();
-    void bind();
+    void binddif();
+    void bindnorm();
     void unbind();
 private:
     int32 textureWidth = 0;

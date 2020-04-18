@@ -2,8 +2,8 @@
 layout(location = 0) out vec4  f_color;
 
 in vec3 v_position;
-in vec3 v_normals;
 in vec2 v_texturecord;
+in mat3 v_tbn;
 
 struct Material{
     vec3 specular;
@@ -39,11 +39,14 @@ uniform Material u_material;
 uniform Directionallight u_directional;
 uniform PointLight u_pointlight;
 uniform sampler2D u_diffusemap;
+uniform sampler2D u_normalmap;
 uniform SpotLight u_spotlight;
 
 void main(){
     vec3 view = normalize(-v_position);
-    vec3 normal = normalize(v_normals);
+    vec3 normal = texture(u_normalmap, v_texturecord).rgb;
+    normal = normalize(normal * 2.0 - 1.0f);
+    normal = normalize(v_tbn * normal);
     vec4 diffuseColor = texture(u_diffusemap, v_texturecord);
     if(diffuseColor.w < 0.9) {
         discard;
