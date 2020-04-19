@@ -8,7 +8,13 @@ uint64 numindexies, Shader* shader, const char* filediffuse, const char* filenor
     this->numindexies = numindexies;
     vertexbuffer = new VertexBuffer(vertices.data(), numVertices);
     indexbuffer = new IndexBuffer(indices.data(), numindexies, sizeof(indices[0]));
-    texturebuffer = new TextureBuffer(filediffuse, material.diffuseMap, filenormal, material.normalMap);
+    if(filediffuse[0] != '\0'){
+        texturebuffer = new TextureBuffer(filediffuse, material.diffuseMap, filenormal, material.normalMap);
+        GLCALL(glUniform1f(glGetUniformLocation(shader->getShaderid(), "u_iftextured"), 1.0f));
+    }else{
+        GLCALL(glUniform1f(glGetUniformLocation(shader->getShaderid(), "u_iftextured"), 0.0f));
+    }
+    
     diffuselocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.diffuse"));
     specularlocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.specular"));
     emissivelocation = GLCALL(glGetUniformLocation(shader->getShaderid(), "u_material.emissive"));
@@ -19,7 +25,9 @@ uint64 numindexies, Shader* shader, const char* filediffuse, const char* filenor
 Mesh::~Mesh(){
     delete indexbuffer;
     delete vertexbuffer;
-    delete texturebuffer;
+    if(texturebuffer != nullptr){
+        delete texturebuffer;
+    }
 }
 void Mesh::render(){
     vertexbuffer->bind();
@@ -28,11 +36,16 @@ void Mesh::render(){
     GLCALL(glUniform3fv(specularlocation, 1, (float*)&material.specular));
     GLCALL(glUniform3fv(emissivelocation, 1, (float*)&material.emissive));
     GLCALL(glUniform1f(shininesslocation, material.shininess));
-    texturebuffer->binddif();
-    GLCALL(glUniform1i(diffuseMapLocation, 0));
-    texturebuffer->bindnorm();
-    GLCALL(glActiveTexture(GL_TEXTURE0));
-    GLCALL(glUniform1i(normalMapLocation, 1));
+    if(texturebuffer != nullptr){
+        texturebuffer->binddif();
+        GLCALL(glUniform1i(diffuseMapLocation, 0));
+        texturebuffer->bindnorm();
+        GLCALL(glActiveTexture(GL_TEXTURE0));
+        GLCALL(glUniform1i(normalMapLocation, 1));
+    }else{
+
+    }
+    
     GLCALL(glDrawElements(GL_TRIANGLES, numindexies, GL_UNSIGNED_INT, 0));
 }
 
@@ -57,11 +70,21 @@ void Model::init(const char* filename, Shader* shader){
         uint64 diffuseMapNameLength = 0;
         input.read((char*)&diffuseMapNameLength, sizeof(uint64));
         std::string diffuseMapName(diffuseMapNameLength, '\0');
-        input.read((char*)&diffuseMapName[0], diffuseMapNameLength);
+        if(diffuseMapNameLength > 0){
+            input.read((char*)&diffuseMapName[0], diffuseMapNameLength);
+        }else{
+            diffuseMapName = "\0";
+        }
+        
         uint64 normalMapNameLength = 0;
         input.read((char*)&normalMapNameLength, sizeof(uint64));
         std::string normalMapName(normalMapNameLength, '\0');
-        input.read((char*)&normalMapName[0], normalMapNameLength);
+        if(normalMapNameLength > 0){
+            input.read((char*)&normalMapName[0], normalMapNameLength);
+        }else{
+            normalMapName = "\0";
+        }
+        
         input.read((char*)&numVertices, sizeof(uint64));
         input.read((char*)&numindexies, sizeof(uint64));
         for(uint64 i = 0; i < numVertices; i++) {

@@ -63,7 +63,7 @@ void processMesh(aiMesh* mesh, const aiScene* scene) {
 
     for(unsigned int i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
-        assert(face.mNumIndices == 3);
+        //assert(face.mNumIndices == 3);
         for(unsigned int j = 0; j < face.mNumIndices; j++) {
             m.indices.push_back(face.mIndices[j]);
         }
@@ -134,10 +134,19 @@ void processMaterials(const aiScene* scene) {
 
         uint32_t numDiffuseMaps = material->GetTextureCount(aiTextureType_DIFFUSE);
         uint32_t numNormalMaps = material->GetTextureCount(aiTextureType_NORMALS);
-        assert(numDiffuseMaps > 0);
-        material->GetTexture(aiTextureType_DIFFUSE, 0, &mat.diffuseMapName);
-        assert(numNormalMaps > 0);
-        material->GetTexture(aiTextureType_NORMALS, 0, &mat.normalMapName);
+        if(numDiffuseMaps > 0){
+            assert(numDiffuseMaps > 0);
+            material->GetTexture(aiTextureType_DIFFUSE, 0, &mat.diffuseMapName);
+        }else{
+            mat.diffuseMapName = "\0";
+        }
+        if(numNormalMaps > 0){
+            assert(numNormalMaps > 0);
+            material->GetTexture(aiTextureType_NORMALS, 0, &mat.normalMapName);
+        }else{
+            mat.normalMapName = "\0";
+        }
+        
 
         materials.push_back(mat);
     }
@@ -181,15 +190,27 @@ int main(int argc, char** argv) {
         output.write((char*)&mesh.material.shininess, sizeof(float));
         const char* pathPrefix = "models/";
         // Diffuse map
-        uint64_t diffuesMapNameLength = mesh.material.diffuseMapName.length + 7;
-        output.write((char*)&diffuesMapNameLength, sizeof(uint64_t));
-        output.write(pathPrefix, 7);
-        output.write((char*)&mesh.material.diffuseMapName.data, mesh.material.diffuseMapName.length);
+        if(mesh.material.diffuseMapName.length == 0){
+            uint64_t diffuesMapNameLength = 0;
+            output.write((char*)&diffuesMapNameLength, sizeof(uint64_t));
+        }else{
+            uint64_t diffuesMapNameLength = mesh.material.diffuseMapName.length + 7;
+            output.write((char*)&diffuesMapNameLength, sizeof(uint64_t));
+            output.write(pathPrefix, 7);
+            output.write((char*)&mesh.material.diffuseMapName.data, mesh.material.diffuseMapName.length);
+        }
+        
         // Normal map
-        uint64_t normalMapNameLength = mesh.material.normalMapName.length + 7;
+        if(mesh.material.normalMapName.length == 0){
+            uint64_t normalMapNameLength = 0;
         output.write((char*)&normalMapNameLength, sizeof(uint64_t));
-        output.write(pathPrefix, 7);
-        output.write((char*)&mesh.material.normalMapName.data, mesh.material.normalMapName.length);
+        }else{
+            uint64_t normalMapNameLength = mesh.material.normalMapName.length + 7;
+            output.write((char*)&normalMapNameLength, sizeof(uint64_t));
+            output.write(pathPrefix, 7);
+            output.write((char*)&mesh.material.normalMapName.data, mesh.material.normalMapName.length);
+        }
+        
 
         output.write((char*)&numVertices, sizeof(uint64_t));
         output.write((char*)&numIndices, sizeof(uint64_t));

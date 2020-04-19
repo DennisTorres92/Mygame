@@ -14,7 +14,7 @@ struct Mesh{
     private:
         VertexBuffer* vertexbuffer;
         IndexBuffer* indexbuffer;
-        TextureBuffer* texturebuffer;
+        TextureBuffer* texturebuffer = nullptr;
         Shader* shader;
         Material material;
         uint64 numindexies;

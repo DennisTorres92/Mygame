@@ -3,6 +3,7 @@ layout(location = 0) out vec4  f_color;
 
 in vec3 v_position;
 in vec2 v_texturecord;
+in vec3 v_normal;
 in mat3 v_tbn;
 
 struct Material{
@@ -41,16 +42,26 @@ uniform PointLight u_pointlight;
 uniform sampler2D u_diffusemap;
 uniform sampler2D u_normalmap;
 uniform SpotLight u_spotlight;
+uniform float u_iftextured;
 
 void main(){
     vec3 view = normalize(-v_position);
-    vec3 normal = texture(u_normalmap, v_texturecord).rgb;
-    normal = normalize(normal * 2.0 - 1.0f);
-    normal = normalize(v_tbn * normal);
-    vec4 diffuseColor = texture(u_diffusemap, v_texturecord);
-    if(diffuseColor.w < 0.9) {
+    vec3 normal;
+    vec4 diffuseColor;
+    if(u_iftextured == 1.0f){
+        normal = texture(u_normalmap, v_texturecord).rgb;
+        normal = normalize(normal * 2.0 - 1.0f);
+        normal = normalize(v_tbn * normal);
+        diffuseColor = texture(u_diffusemap, v_texturecord);
+        if(diffuseColor.w < 0.9) {
         discard;
     }
+    }else{
+        diffuseColor = vec4(u_material.diffuse, 1.0f);
+        normal = normalize(v_normal);
+    }
+    
+    
     vec3 light = normalize(-u_directional.direction); //lightposition
     //Color and directionallight(sun)
     vec3 reflection = reflect(u_directional.direction, normal);

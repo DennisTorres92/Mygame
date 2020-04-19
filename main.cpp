@@ -12,7 +12,7 @@ int main(int argc, char** argv){
 
 
     Model monkey;
-    monkey.init("models/fern.bmf", &shader);
+    monkey.init("models/world.bmf", &shader);
 
     uint64 perfCounterFrequency = SDL_GetPerformanceFrequency();
     uint64 lastCounter = SDL_GetPerformanceCounter();

@@ -6,6 +6,7 @@ layout(location = 3) in vec2 a_texture;
 
 out vec3 v_position;
 out vec2 v_texturecord;
+out vec3 v_normal;
 out mat3 v_tbn;
 uniform mat4 u_modelViewProj;
 uniform mat4 u_modelView;
@@ -22,4 +23,5 @@ void main(){
     vec3 b = normalize(mat3(u_invModelView) * cross(n, t));
     mat3 tbn = transpose(mat3(t, b, n)); 
     v_tbn = tbn;
+    v_normal = mat3(u_invModelView) * a_normals;
 }
