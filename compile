@@ -1,0 +1,7 @@
+#!/bin/bash   
+echo "Compile Game for Linux";
+g++ -g;
+g++ -c main.cpp shaders/shader.cpp src/buffers.cpp src/player.cpp src/menu.cpp src/models.cpp src/camera.cpp;
+g++ -lGL -lSDL2 -lGLEW;
+g++ -o game
+echo "Compile finished";
