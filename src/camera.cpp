@@ -5,7 +5,7 @@ Camera::Camera(int shaderID, uint32 width, uint32 height, float fov, glm::vec3& 
     modelViewProjmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_modelViewProj"));
     modelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_modelView"));
     invmodelViewmatrixloc = GLCALL(glGetUniformLocation(shaderID, "u_invModelView"));
-    model = glm::mat4(1.0f);model = glm::scale(model, glm::vec3(0.5f));
+    model = glm::mat4(1.0f);
     position = glm::vec3(0.0f, 0.0f, 5.0f);
     projektion = glm::perspective(glm::radians(fov / 2), (float)width / (float)height, 0.1f, 1000.0f);
     view = glm::translate(glm::mat4(1.0f), position);
@@ -38,6 +38,17 @@ glm::vec3 Camera::onMouseMoved(float xRel, float yRel, float mouseSensitivity) {
         lookAt = glm::normalize(front);
         return glm::normalize(front);
     }
+float Camera::zoom(float yRel){
+    maxzoom += yRel;
+    if(maxzoom <= 0.2f){
+        maxzoom = 0.2f;
+    }else if(maxzoom >= 1.2f){
+        maxzoom = 1.2;
+    }else{
+        model = glm::scale(model, glm::vec3(1.0f + yRel));
+    }
+    return maxzoom;
+}
 glm::mat4 Camera::getview(){
     return view;
 }

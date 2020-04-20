@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include "../define.h"
 
 struct Camera{
@@ -11,15 +13,18 @@ struct Camera{
     glm::mat4 getview();
     glm::mat4 getproj();
     glm::vec3 lookat();
+    float zoom(float yRel);
     private:
     int modelViewProjmatrixloc, modelViewmatrixloc, invmodelViewmatrixloc;
     glm::vec3 position;
     glm::mat4 model ;
     glm::mat4 projektion ;
     glm::mat4 modelViewProj, invModelView;
+    float maxzoom = 1.0f;
     float yaw;
     float pitch;
     glm::mat4 view;
     glm::vec3 lookAt;
     
 };
+#endif /*  CAMERA_H  */

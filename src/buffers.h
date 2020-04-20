@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BUFFERS_H
+#define BUFFERS_H
+
 #include "../define.h"
 #include "../libs/stb_image.h"
 
@@ -53,3 +55,4 @@ private:
 	GLuint idDiffuse, idNormal;
 };  
 
+#endif /*  BUFFERS_H  */

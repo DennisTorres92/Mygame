@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MODELS_H
+#define MODELS_H
+
 #include <vector>
 #include <fstream>
 #include "../shaders/shader.h"
@@ -38,3 +40,5 @@ class Model{
 
 void sun(glm::mat4 view, glm::vec3 sunColor, Shader* shader);
 void pointlight(Shader* shader, glm::mat4 view, float delta);
+
+#endif /*  MODELS_H  */

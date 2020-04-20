@@ -1,4 +1,6 @@
-#pragma once
+#ifndef DEFINE_H
+#define DEFINE_H
+
 #include <cstdio>
 #include <cstddef>
 #include <cstdlib>
@@ -43,3 +45,4 @@ void ogldebugerror(GLenum source, GLenum type, GLuint id,GLenum serverety, GLsiz
     #define GLCALL(call) call
 #endif  /*  _DEBUG   */
 
+#endif /*  DEFINE_H  */

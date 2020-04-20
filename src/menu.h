@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MENU_H
+#define MENU_H
+
 #include "../define.h"
 
 struct Window{
@@ -14,3 +16,5 @@ private:
 int mainmenu(int width, int height);
 int ldcfg(uint32& WIDTH, uint32& HEIGHT, uint32& flags);
 int chcfg(uint32& WIDTH, uint32& HEIGHT, uint32& flags);
+
+#endif /*  MENU_H  */

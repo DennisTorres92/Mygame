@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include "../define.h"
 #include "camera.h"
 
@@ -28,3 +30,4 @@ struct Player{
     
     glm::vec3 up;
 };
+#endif /*  PLAYER_H  */

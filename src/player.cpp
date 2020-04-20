@@ -40,7 +40,7 @@ void Player::spotlight(int shaderid){
     }
 	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.diffuse"), 1, (float*)&spotLightColor));
 	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.specular"), 1, (float*)&spotLightColor));
-	spotLightColor *= 0.2f;
+	spotLightColor *= 0.5f;
 	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.ambient"), 1, (float*)&spotLightColor));
 	glm::vec3 spotLightPosition = glm::vec3(0.0f);
 	GLCALL(glUniform3fv(glGetUniformLocation(shaderid, "u_spotlight.position"), 1, (float*)&spotLightPosition));
@@ -84,7 +84,7 @@ void Player::move(SDL_Event ev){
                 }
                 break;
             case SDLK_SPACE:
-                if(position.y <= 0.0f && !bjump && !fly){
+                if(position.y <= 1.0f && !bjump && !fly){
                     jump = 30;
                     bjump = true;
                 }
@@ -128,6 +128,15 @@ void Player::move(SDL_Event ev){
             SDL_SetRelativeMouseMode(SDL_FALSE);
     }else if(ev.type == SDL_MOUSEMOTION && mouseright) {
             camera->onMouseMoved(ev.motion.xrel, ev.motion.yrel, mouseSensitivity);
+    }else if(ev.type == SDL_MOUSEWHEEL){
+        if(ev.wheel.y > 0) // scroll up
+        {
+            camera->zoom(0.2f);
+        }
+        else if(ev.wheel.y < 0) // scroll down
+        {
+            camera->zoom(-0.2f);
+        }
     }
 }
 void Player::ismove(float32 delta, int shaderid){
@@ -151,10 +160,10 @@ void Player::ismove(float32 delta, int shaderid){
         camera->onMouseMoved(-2.0f, 0, mouseSensitivity);
     }if(rotar == 1){
         camera->onMouseMoved(2.0f, 0, mouseSensitivity);
-    }if(!fly && position.y > 0.0f && jump <= 0){
+    }if(!fly && position.y > 1.0f && jump <= 0){
         position -= glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * (4.0f * delta);
-    }if(position.y < 0.0f){
-        position.y = 0.0f;
+    }if(position.y < 1.0f){
+        position.y = 1.0f;
     }if(jump > 0){
         position += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * (4.0f * delta);
         jump--;

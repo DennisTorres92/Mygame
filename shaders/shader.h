@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SHADER_H
+#define SHADER_H
+
 #include "../define.h"
 
 struct Shader{
@@ -13,3 +15,4 @@ private:
     GLuint createShader(const char* vertexShaderFilename, const char* fragmentShaderFilename);
     GLuint shaderid;
 };
+#endif /*  SHADER_H  */
