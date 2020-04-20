@@ -34,7 +34,7 @@ GLuint Shader::compile(std::string shadersource, GLenum type){
 std::string Shader::parse(const char* filename){
     FILE* file;
     file = fopen(filename, "rb");
-    if(file == nullptr){
+    if(file == NULL){
         std::cout<<"ERROR while File "<<filename<<" not found \n";
         return 0;
     }

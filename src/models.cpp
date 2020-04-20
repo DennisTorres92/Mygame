@@ -25,7 +25,7 @@ uint64 numindexies, Shader* shader, const char* filediffuse, const char* filenor
 Mesh::~Mesh(){
     delete indexbuffer;
     delete vertexbuffer;
-    if(texturebuffer != nullptr){
+    if(texturebuffer != NULL){
         delete texturebuffer;
     }
 }
@@ -36,7 +36,7 @@ void Mesh::render(){
     GLCALL(glUniform3fv(specularlocation, 1, (float*)&material.specular));
     GLCALL(glUniform3fv(emissivelocation, 1, (float*)&material.emissive));
     GLCALL(glUniform1f(shininesslocation, material.shininess));
-    if(texturebuffer != nullptr){
+    if(texturebuffer != NULL){
         texturebuffer->binddif();
         GLCALL(glUniform1i(diffuseMapLocation, 0));
         texturebuffer->bindnorm();
