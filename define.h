@@ -38,11 +38,11 @@ typedef double float64;
 
 //Debuglog define in menu.cpp
 void ogldebugerror(GLenum source, GLenum type, GLuint id,GLenum serverety, GLsizei lenght,const GLchar* msg, const void* userparam);
-#ifdef _DEBUG
+#ifndef NDEBUG
     void GLGetError(const char* file, int line, const char* call);
     #define GLCALL(call) call; GLGetError(__FILE__, __LINE__, #call)
 #else
     #define GLCALL(call) call
-#endif  /*  _DEBUG   */
+#endif  /*  NDEBUG   */
 
 #endif /*  DEFINE_H  */

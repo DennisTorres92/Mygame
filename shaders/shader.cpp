@@ -56,12 +56,12 @@ GLuint Shader::createShader(const char* vertexShaderFilename, const char* fragme
     GLCALL(glAttachShader(program, vs));
     GLCALL(glAttachShader(program, fs));
     GLCALL(glLinkProgram(program));
-    #ifdef _RELEASE
+    #ifdef NDEBUG
         GLCALL(glDetachShader(program, vs));
         GLCALL(glDetachShader(program, fs));
         GLCALL(glDeleteShader(vs));
         GLCALL(glDeleteShader(fs));
-    #endif  /*_RELEASE  */
+    #endif  /*  NDEBUG  */
     return program;
 } 
 int Shader::getShaderid(){

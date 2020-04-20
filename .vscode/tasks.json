@@ -6,8 +6,8 @@
             "type": "shell",
             "command": "g++", 
             "args":[
-                "-g", "-D", "_DEBUG",  //DEBUG Modus
-                "main.cpp", "shaders/shader.cpp", "src/buffers.cpp", "src/player.cpp", "src/menu.cpp", "src/models.cpp", "src/camera.cpp",
+                //"-D", "NDEBUG",  //Nodebug Modus
+                "-g", "main.cpp", "shaders/shader.cpp", "src/buffers.cpp", "src/player.cpp", "src/menu.cpp", "src/models.cpp", "src/camera.cpp",
                 "-lGL", "-lSDL2" ,"-lGLEW",
                 "-o", "game"
             ],

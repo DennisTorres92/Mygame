@@ -157,7 +157,7 @@ int main(int argc, char** argv) {
         return 1;
     }
     if(argc < 2) {
-        std::cout << "Usage: " << argv[0] << " <modelfilename>" << std::endl;
+        std::cout << "Usage: " << argv[0] << " <modelfilename>\n";
         return 1;
     }
 
@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
     aiProcess_GenNormals | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_JoinIdenticalVertices | 
     aiProcess_ImproveCacheLocality | aiProcess_CalcTangentSpace);
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE, !scene->mRootNode) {
-        std::cout << "Error while loading model with assimp: " << importer.GetErrorString() << std::endl;
+        std::cout << "Error while loading model with assimp: " << importer.GetErrorString() << "\n";
         return 1;
     }
 
@@ -178,7 +178,7 @@ int main(int argc, char** argv) {
     std::string outputFilename = filenameWithoutExtension + ".bmf";
 
     std::ofstream output(outputFilename, std::ios::out | std::ios::binary);
-    std::cout << "Writing bmf file..." << std::endl;
+    std::cout << "Writing bmf file..." << "\n";
     uint64_t numMeshes = meshes.size();
     output.write((char*)&numMeshes, sizeof(uint64_t));
     for(Mesh& mesh : meshes) {
